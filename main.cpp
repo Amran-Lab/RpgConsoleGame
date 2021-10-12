@@ -2,9 +2,10 @@
 #include "include/player.h"
 #include "include/board.h"
 
-void drawBoard(Board &board,Player &player, Player &gem);
-void drawMenu(Board &board,Player &player);
-void displayStats(Board &board,Player &player);
+void drawBoard(Board &board,Player &player, Gem &gem);
+void drawMenu(Player &player);
+void displayStats(Player &player);
+bool encounterMonster(void);
 
 using namespace std;
 
@@ -16,35 +17,34 @@ int main() {
   char option;
 
   Board board;
-  Player player;
-  Player gem;
-  
+  Player player = Player(0,0,3,3);
+  Gem gem = Gem(8,5);;
   board = Board();
-  player = Player(0,0);
-  gem = Player(8,5);
   gameState = Adventure;
 
   while (gameFlag){
     switch(gameState) {
       case Adventure:
         drawBoard(board,player,gem);
-        printf("\nType WASD To move character or M for Menu: ");
+        printf("\nType WASD To move character or M for Menu: \n");
+        if (gem.collision(player.getPosX(), player.getPosY())){
+            player.upScore();
+            printf("You Gained A Gem\n");
+        }
+        encounterMonster();
         cin >> option;
         if ((toupper(option) == 'M')){
           gameState = Menu;
         }
         else {
           player.movePlayer(option);
-          if (gem.collision(player.getPosX(), player.getPosY())){
-            player.upScore();
-          }
         }
         break;
       case Menu:
-        drawMenu(board,player);
+        drawMenu(player);
         break;
       case Stats:
-        displayStats(board,player);
+        displayStats(player);
         break;
       case Items:
         printf("\033c");
@@ -63,16 +63,16 @@ int main() {
   }
 }
 
-void drawBoard(Board &board,Player &player, Player &gem){
-    board.drawItem("\U0001F916", player.getPosX(), player.getPosY());
+void drawBoard(Board &board,Player &player, Gem &gem){
     board.drawItem("\U0001F48E", gem.getPosX(), gem.getPosY());
+    board.drawItem("\U0001F916", player.getPosX(), player.getPosY());
     printf("\033c"); // erases previous board
     printf("Number of Gems: %d\n", player.getScore());
     board.printBoard();
     board.initiliazeBoard(); // resets board - removes previous artifacts
 }
 
-void drawMenu(Board &board,Player &player){
+void drawMenu(Player &player){
     printf("\033c");
     printf("Number of Gems: %d", player.getScore());
     char option;
@@ -95,10 +95,11 @@ void drawMenu(Board &board,Player &player){
         break;
       default:
         gameState = Adventure; 
+        break;
     }
 }
 
-void displayStats(Board &board,Player &player){
+void displayStats(Player &player){
   char option;
   printf("\033c");
   printf("Number of Gems: %d", player.getScore());
@@ -128,7 +129,15 @@ void displayStats(Board &board,Player &player){
     default:
       break;
   }
+}
 
+bool encounterMonster(void){
+  int chance = (rand() % 100) + 1;
+  if (chance <= 20){
+    printf("SCARY MONSTER");
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -142,4 +151,12 @@ and 100,000 Diamonds for escape.
 
 The forest is dangerous as many dangerous monsters lurk
 in the woods.
+*/
+
+/*
+TODO:
+Add Monsters and their Events:
+Add Fighting Capability
+Split Player Obj ->
+Item/Gem -> Monster -> Player
 */

@@ -1,22 +1,53 @@
 #include <iostream> 
 using namespace std;
+class Sprite {
+  protected:
+  int posX,posY;
+  public:
+  Sprite(int initPosX,int initPosY){
+    posX = initPosX;
+    posY = initPosY;
+  }
+  int getPosX(void){return posX;}
+  int getPosY(void){return posY;}
+  void setPos(int x,int y){posX = x;posY =y;}
+};
 
+class Gem: public Sprite {
+  public:
+  Gem(int initPosX,int initPosY) :Sprite(initPosX,initPosY){
 
-class Player {
+  }
+  bool collision(int x,int y){
+      if ((posX == x ) && (posY==y)){
+        setPos(rand() % 10,rand() % 10);
+        return true;
+      }
+      return false;
+  }
+};
+
+class Character: public Sprite {
+  public:
+    Character(int initPosX,int initPosY) : Sprite(initPosX,initPosY){
+      
+    }
+  protected:
+    int atk = 1;
+    int def = 1;
+};
+
+class Player: public Character {
   private:
-    int posX,posY;
-    int atk = 3;
-    int def = 3;
+
     int score = 0;
 
   public:
-    Player(int initPosX,int initPosY){
-      posX = initPosX;
-      posY = initPosY;
+    Player(int initPosX,int initPosY,int initAtk,int initDef) : Character(initPosX,initPosY){
+      atk = initAtk;
+      def = initDef;
+    }
 
-    }
-    Player(){
-    }
     void movePlayer(char option){
       switch(option) {
         case 'W':
@@ -51,10 +82,6 @@ class Player {
       }
     }
 
-    int getPosX(void){return posX;}
-    int getPosY(void){return posY;}
-    void setPos(int x,int y){posX = x;
-    posY =y;}
     int getAtk(void){return atk;}
     int getDef(void){return def;}
     void upAtk(void){
@@ -75,13 +102,6 @@ class Player {
       }
     }
     
-    bool collision(int x,int y){
-      if ((posX == x ) && (posY==y)){
-        setPos(rand() % 10,rand() % 10);
-        return true;
-      }
-      return false;
-    }
     void upScore(void){score++;}
     int getScore(void){return score;}
 
