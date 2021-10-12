@@ -23,7 +23,7 @@ class Board {
     }
     void initiliazeBoard(){
       board.clear();
-      std::vector<std::string> row = {" x "," x "," x "," x "," x "," x "," x "," x "," x "," x "};
+      std::vector<std::string> row = {" \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "};
       board = {row,row,row,row,row,row,row,row,row,row};
     }
 
