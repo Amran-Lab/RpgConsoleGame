@@ -2,8 +2,8 @@
 #include "include/player.h"
 #include "include/board.h"
 
-void drawBoard(void);
-void drawMenu(void);
+void drawBoard(Board &board,Player &player, Player &gem);
+void drawMenu(Board &board,Player &player);
 
 using namespace std;
 
@@ -15,16 +15,20 @@ int main() {
   bool gameFlag = true;
   char option;
 
+  Board board;
+  Player player;
+  Player gem;
+
   board = Board();
   player = Player(0,0);
   gem = Player(8,5);
 
   while (gameFlag){
-    drawBoard();
+    drawBoard(board,player,gem);
     printf("\nType WASD To move character or M for Menu: ");
     cin >> option;
     if ((toupper(option) == 'M')){
-      drawMenu();
+      drawMenu(board,player);
     }
     else{
     player.movePlayer(option);
@@ -37,7 +41,7 @@ int main() {
 
 }
 
-void drawBoard(void){
+void drawBoard(Board &board,Player &player, Player &gem){
     board.drawItem("\u25CF", player.getPosX(), player.getPosY());
     board.drawItem("\u2666", gem.getPosX(), gem.getPosY());
     printf("\033[2J");
@@ -47,7 +51,7 @@ void drawBoard(void){
     board.initiliazeBoard();
 }
 
-void drawMenu(void){
+void drawMenu(Board &board,Player &player){
     printf("\033[2J");
     printf("\033[%d;%dH", 0, 0);
     printf("Number of Gems: %d\n", player.getScore());
@@ -66,17 +70,13 @@ void drawMenu(void){
         case 'S':
         case 's':
           printf("Your Stats Are");
-          // code block
           break;
         case 'Q':
         case 'q':
           menuFlag = false;
           break;
         default:
-          menuFlag = false;
-          
+          menuFlag = false;   
       }
-
     }
-
 }
