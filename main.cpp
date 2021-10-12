@@ -12,16 +12,19 @@ int main() {
   board = Board();
   Player player;
   player = Player(0,0);
+  Player gem;
+  gem = Player(8,5);
 
   while (gameFlag){
     printf("\033[2J");
     printf("\033[%d;%dH", 0, 0);
+    board.drawItem("\u25CF", player.getPosX(), player.getPosY());
+    board.drawItem("\u2666", gem.getPosX(), gem.getPosY());
     board.printBoard();
     board.initiliazeBoard();
     printf("\nType WASD To move character: ");
     cin >> option;
     player.movePlayer(option);
-    board.drawItem("\u25CF", player.getPosX(), player.getPosY());
 
   }
 
