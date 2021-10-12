@@ -52,8 +52,11 @@ class Player {
 
     int getPosX(void){return posX;}
     int getPosY(void){return posY;}
+    void setPos(int x,int y){posX = x;
+    posY =y;}
     bool collision(int x,int y){
       if ((posX == x ) && (posY==y)){
+        setPos(rand() % 10,rand() % 10);
         return true;
       }
       return false;
