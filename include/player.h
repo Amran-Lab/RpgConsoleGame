@@ -52,5 +52,13 @@ class Player {
 
     int getPosX(void){return posX;}
     int getPosY(void){return posY;}
+    bool collision(int x,int y){
+      if ((posX == x ) && (posY==y)){
+        return true;
+      }
+      return false;
+    }
+    void upScore(void){score++;}
+    int getScore(void){return score;}
 
 };
