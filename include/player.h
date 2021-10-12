@@ -16,5 +16,41 @@ class Player {
     }
     Player(){
     }
+    void movePlayer(char option){
+      switch(option) {
+        case 'W':
+        case 'w':
+          if (posY > 0){
+            posY--;
+          }
+          break;
+        case 'A':
+        case 'a':
+          if (posX > 0){
+            posX--;
+          }
+          break;
+          break;
+        case 'S':
+        case 's':
+          if (posY < 9){
+            posY++;
+          }
+          // code block
+          break;
+        case 'D':
+        case 'd':
+          if (posX < 9){
+            posX++;
+          }
+          break;
+        default:
+          printf("Incorrect Input");
+          
+      }
+    }
+
+    int getPosX(void){return posX;}
+    int getPosY(void){return posY;}
 
 };

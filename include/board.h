@@ -19,5 +19,9 @@ class Board {
       }
     }
 
+    void drawItem(string item,int posX,int posY){
+      board[posY][posX] = " " + item + " ";
+    }
+
 
 };

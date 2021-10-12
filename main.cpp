@@ -6,7 +6,22 @@ using namespace std;
 
 
 int main() {
+  bool gameFlag = true;
+  char option;
   Board board;
   board = Board();
-  board.printBoard();
+  Player player;
+  player = Player(0,0);
+
+  while (gameFlag){
+    printf("\033[2J");
+    printf("\033[%d;%dH", 0, 0);
+    board.printBoard();
+    printf("\nType WASD To move character: ");
+    cin >> option;
+    player.movePlayer(option);
+    board.drawItem("\u25CF", player.getPosX(), player.getPosY());
+
+  }
+
 }
