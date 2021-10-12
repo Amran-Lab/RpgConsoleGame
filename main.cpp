@@ -17,6 +17,7 @@ int main() {
     printf("\033[2J");
     printf("\033[%d;%dH", 0, 0);
     board.printBoard();
+    board.initiliazeBoard();
     printf("\nType WASD To move character: ");
     cin >> option;
     player.movePlayer(option);

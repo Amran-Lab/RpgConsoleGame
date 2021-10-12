@@ -6,8 +6,7 @@ class Board {
   std::vector<std::vector<std::string>> board;
   public:
     Board(){
-      std::vector<std::string> row = {" x "," x "," x "," x "," x "," x "," x "," x "," x "," x "};
-      board = {row,row,row,row,row,row,row,row,row,row};
+      initiliazeBoard();
     }
 
     void printBoard(){
@@ -22,6 +21,10 @@ class Board {
     void drawItem(string item,int posX,int posY){
       board[posY][posX] = " " + item + " ";
     }
-
+    void initiliazeBoard(){
+      board.clear();
+      std::vector<std::string> row = {" x "," x "," x "," x "," x "," x "," x "," x "," x "," x "};
+      board = {row,row,row,row,row,row,row,row,row,row};
+    }
 
 };
