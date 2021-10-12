@@ -4,10 +4,11 @@
 
 void drawBoard(Board &board,Player &player, Player &gem);
 void drawMenu(Board &board,Player &player);
+void displayStats(Board &board,Player &player);
 
 using namespace std;
 
-enum State { Adventure, Menu};
+enum State { Adventure, Menu, Stats, Items};
 State gameState;
 
 int main() {
@@ -27,7 +28,6 @@ int main() {
     switch(gameState) {
       case Adventure:
         drawBoard(board,player,gem);
-        //printf("%c%c%c%c",  0xF0,0x9F,0xA4,0x96);
         printf("\nType WASD To move character or M for Menu: ");
         cin >> option;
         if ((toupper(option) == 'M')){
@@ -43,14 +43,24 @@ int main() {
       case Menu:
         drawMenu(board,player);
         break;
+      case Stats:
+        displayStats(board,player);
+        break;
+      case Items:
+        printf("\033c");
+        printf("Your Items Are: ");
+        printf("\nPress M for Menu or Q to Adventure");
+        cin >> option;
+        if ((toupper(option) == 'M')){
+          gameState = Menu;
+        }
+        else {
+          gameState = Adventure;
+        }
       default:
         break;
-
-      
     }
-
   }
-
 }
 
 void drawBoard(Board &board,Player &player, Player &gem){
@@ -63,7 +73,8 @@ void drawBoard(Board &board,Player &player, Player &gem){
 }
 
 void drawMenu(Board &board,Player &player){
-    printf("\nNumber of Gems: %d", player.getScore());
+    printf("\033c");
+    printf("Number of Gems: %d", player.getScore());
     char option;
     printf("\nPress A to change Weapon and Armour");
     printf("\nPress S to Increase Stats ");
@@ -72,14 +83,11 @@ void drawMenu(Board &board,Player &player){
     switch(option) {
       case 'A':
       case 'a':
-      // goes up 3 erases them line by line then goes back up 2 lines
-        printf("\x1b[3A\33[2K\n\33[2K\n\33[2K\x1b[2A"); 
-        printf("Your Items Are: \n");
+        gameState = Items;
         break;
       case 'S':
       case 's':
-        printf("\x1b[3A\33[2K\n\33[2K\n\33[2K\x1b[2A");
-        printf("Your Stats Are: \n");
+        gameState = Stats;
         break;
       case 'Q':
       case 'q':
@@ -88,5 +96,50 @@ void drawMenu(Board &board,Player &player){
       default:
         gameState = Adventure; 
     }
+}
+
+void displayStats(Board &board,Player &player){
+  char option;
+  printf("\033c");
+  printf("Number of Gems: %d", player.getScore());
+  printf("\nYour Stats Are: ");
+  printf("\nAttack: %d", player.getAtk());
+  printf("\nDefence: %d", player.getDef());
+  printf("\nSpend Gems to increase stats");
+  printf("\nPress 1 to Increase Attack");
+  printf("\nPress 2 to Increase Defence");
+  printf("\nPress M for Menu or Q to Adventure: ");
+  cin >> option;
+  switch(option) {
+    case 'M':
+    case 'm':
+      gameState = Menu;
+      break;
+    case 'Q':
+    case 'q':
+      gameState = Adventure;
+      break;
+    case '1':
+      player.upAtk();
+      break;
+    case '2':
+      player.upDef();
+      break;
+    default:
+      break;
+  }
 
 }
+
+/*
+STORY:
+
+ROBOT Crash lands on Earth - Is damaged and ship is low
+on fuel.
+
+Collects Diamonds to increase ROBOT strength
+and 100,000 Diamonds for escape.
+
+The forest is dangerous as many dangerous monsters lurk
+in the woods.
+*/

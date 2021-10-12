@@ -5,7 +5,8 @@ using namespace std;
 class Player {
   private:
     int posX,posY;
-    int atk, def;
+    int atk = 3;
+    int def = 3;
     int score = 0;
 
   public:
@@ -54,6 +55,26 @@ class Player {
     int getPosY(void){return posY;}
     void setPos(int x,int y){posX = x;
     posY =y;}
+    int getAtk(void){return atk;}
+    int getDef(void){return def;}
+    void upAtk(void){
+      if (score > 0){atk++;
+      score--;
+      }
+      else{
+        printf("Not Enough Gems");
+      }
+    }
+    void upDef(void){
+      if (score > 0){
+        score--;
+        def++;
+      }
+      else{
+        printf("Not Enough Gems");
+      }
+    }
+    
     bool collision(int x,int y){
       if ((posX == x ) && (posY==y)){
         setPos(rand() % 10,rand() % 10);
