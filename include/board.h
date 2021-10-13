@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+#ifndef BOARD_H
+#define BOARD_H
 class Board {
   private:
   std::vector<std::vector<std::string>> board;
@@ -28,3 +30,4 @@ class Board {
     }
 
 };
+#endif

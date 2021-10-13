@@ -1,5 +1,7 @@
 #include <iostream> 
 using namespace std;
+#ifndef PLAYER_H
+#define PLAYER_H
 class Sprite {
   protected:
   int posX,posY;
@@ -106,3 +108,4 @@ class Player: public Character {
     int getScore(void){return score;}
 
 };
+#endif
