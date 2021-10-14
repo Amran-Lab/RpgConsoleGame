@@ -32,22 +32,25 @@ class Gem: public Sprite {
 class Character: public Sprite {
   public:
     Character(int initPosX,int initPosY) : Sprite(initPosX,initPosY){
-      
     }
+
   protected:
     int atk = 1;
     int def = 1;
+    int hp = 10;
 };
 
 class Player: public Character {
-  private:
 
+  private:
+    int fightState = 0;  // 0 = NoFight 1 = WIn, 2= Loss
     int score = 0;
 
   public:
-    Player(int initPosX,int initPosY,int initAtk,int initDef) : Character(initPosX,initPosY){
+    Player(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : Character(initPosX,initPosY){
       atk = initAtk;
       def = initDef;
+      hp = initHp;
     }
 
     void movePlayer(char option){
@@ -86,6 +89,7 @@ class Player: public Character {
 
     int getAtk(void){return atk;}
     int getDef(void){return def;}
+    int getHp(void){return hp;}
     void upAtk(void){
       if (score > 0){atk++;
       score--;
@@ -103,9 +107,26 @@ class Player: public Character {
         printf("Not Enough Gems");
       }
     }
+    void upHp(void){
+      if (score > 0){
+        score--;
+        hp++;
+      }
+      else{
+        printf("Not Enough Gems");
+      }
+    }
     
     void upScore(void){score++;}
+    void downScore(void){
+      if (score > 0){
+        score--;
+      }
+    }
     int getScore(void){return score;}
+    
+    void fightOutcome(int state){fightState = state;}
+    int getFight(void){return fightState;}
 
 };
 #endif

@@ -12,7 +12,7 @@ int main() {
   char option;
 
   Board board;
-  Player player = Player(0,0,3,3);
+  Player player = Player(0,0,7,3,30);
   Gem gem = Gem(8,5);;
   board = Board();
 
@@ -20,25 +20,12 @@ int main() {
     switch(gameState) {
       case Adventure:
         drawBoard(board,player,gem);
-        printf("\nType WASD To move character or M for Menu: \n");
-        // encounterMonster();
-        cin >> option;
-        if ((toupper(option) == 'M')){
-          gameState = Menu;
-        }
-        else {
-          player.movePlayer(option);
-          if (gem.collision(player.getPosX(), player.getPosY())){
-            player.upScore();
-            printf("You Gained A Gem\n");
-        }
-        }
         break;
       case Menu:
         drawMenu(player);
         break;
       case Stats:
-        displayStats(player);
+        statMenu(player);
         break;
       case Items:
         printf("\033c");
@@ -48,7 +35,7 @@ int main() {
         if ((toupper(option) == 'M')){
           gameState = Menu;
         }
-        else {
+        else if ((toupper(option) == 'Q')) {
           gameState = Adventure;
         }
       default:
