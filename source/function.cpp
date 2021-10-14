@@ -149,9 +149,9 @@ void fightMonster(Player &player, Character &monster){
   float hitMonster,hitPlayer;
   char option;
 
-  printf("\n|          Player Health |    %8.2f|",player.getLiveHp());
+  printf("\n|         Player Health | %-8.2f    |",player.getLiveHp());
   printf("\n+-------------------------------------+");
-  printf("\n|         Monster Health |    %8.2f|",monster.getLiveHp());
+  printf("\n|        Monster Health | %-8.2f    |",monster.getLiveHp());
   printf("\n+-------------------------------------+");
   printf("\nPress 1 to Attack");
   printf("\nPress 2 to Defend");
@@ -166,9 +166,9 @@ void fightMonster(Player &player, Character &monster){
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
       monster.hpDamage(hitMonster);
       player.hpDamage(hitPlayer);
-      printf("\n|     Player Got Hit With|    %8.2f|",hitPlayer);
+      printf("\n|      Player Got Hit With | %-8.2f |",hitPlayer);
       printf("\n+-------------------------------------+");
-      printf("\n|    Monster Got Hit With|    %8.2f|",hitMonster);
+      printf("\n|     Monster Got Hit With | %-8.2f |",hitMonster);
       printf("\n+-------------------------------------+");
 
       break;
@@ -179,9 +179,9 @@ void fightMonster(Player &player, Character &monster){
       hitPlayer = (MonAtk*1.2 * modifier) -(0.4*playerDef);
       monster.hpDamage(hitMonster);
       player.hpDamage(hitPlayer);
-      printf("\n|Player Gets Reduced Damage|  %8.2f|",hitPlayer);
+      printf("\n| Player Reduced Damage of | %-8.2f |",hitPlayer);
       printf("\n+-------------------------------------+");
-      printf("\n|   Monster Hit With Recoil|  %8.2f|",hitMonster);
+      printf("\n|  Monster Hit With Recoil | %-8.2f |",hitMonster);
       printf("\n+-------------------------------------+");
 
       break;
@@ -189,7 +189,7 @@ void fightMonster(Player &player, Character &monster){
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
       player.hpDamage(hitPlayer);
-      printf("\n|     Player Got Hit With|    %8.2f|",hitPlayer);
+      printf("\n|      Player Got Hit With | %-8.2f |",hitPlayer);
       printf("\n+-------------------------------------+");
       player.addPoison(3);
       break;
@@ -201,7 +201,7 @@ void fightMonster(Player &player, Character &monster){
       printf("\n|   Monster Poisoned Loses 1 Health   |");
       printf("\n+-------------------------------------+");
   }
-  
+printf("\n+-------------------------------------+");
   if (player.getLiveHp() <= 0){
     player.downScore();
     player.fightOutcome(2);   // Player Loss
