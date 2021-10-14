@@ -12,8 +12,8 @@ int main() {
   char option;
 
   Board board;
-  Player player = Player(0,0,7,3,30);
-  Character monster = Character(0,0,5,3,20);
+  Player player = Player(0,0,5,5,50);
+  Character monster = Character(0,0,5,5,40);
   Gem gem = Gem(8,5);;
   board = Board();
 

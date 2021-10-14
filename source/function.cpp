@@ -40,7 +40,7 @@ void drawBoard(Board &board,Player &player, Gem &gem){
       player.upScore();
       printf("You Gained A Gem\n");
     }
-    encounterMonster();
+    encounterMonster(player);
   }
 }
 
@@ -118,19 +118,19 @@ void statMenu(Player &player){
   }
 }
 
-bool encounterMonster(void){
+bool encounterMonster(Player &player){
   int chance = (rand() % 100) + 1;
-  if (chance <= 40){
-    printf("\nYou Encountered A Monster: FIGHT");
+  if (chance <= 60){
+    
     //string myText;
-
-    // Read from the text file
     //std::ifstream f("ascii.txt");
-
-    // Use a while loop together with the getline() function to read the file line by line
     //if (f.is_open())
       //  std::cout << f.rdbuf();
-      gameState = Fighting;
+    printf("\033c");
+    displayStats(player);
+    printf("\n|   You Encountered A Monster: FIGHT  |");
+    printf("\n+-------------------------------------+");
+    gameState = Fighting;
     return true;
   }
   return false;
@@ -149,13 +149,15 @@ void fightMonster(Player &player, Character &monster){
   float hitMonster,hitPlayer;
   char option;
 
-  printf("\nPlayer Health: %.2f",player.getLiveHp());
-  printf("\nMonster Health: %.2f",monster.getLiveHp());
+  printf("\n|          Player Health |    %8.2f|",player.getLiveHp());
+  printf("\n+-------------------------------------+");
+  printf("\n|         Monster Health |    %8.2f|",monster.getLiveHp());
+  printf("\n+-------------------------------------+");
   printf("\nPress 1 to Attack");
   printf("\nPress 2 to Defend");
   printf("\nPress 3 to Poison");
   cin >> option;
-  printf("\n------------------");
+  printf("\n+-------------------------------------+");
   switch(option) {
     case '1':
       modifier = (((double) rand() / (RAND_MAX)) + 0.5); // 0.5 < r < 1.5
@@ -164,8 +166,10 @@ void fightMonster(Player &player, Character &monster){
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
       monster.hpDamage(hitMonster);
       player.hpDamage(hitPlayer);
-      printf("\nPlayer Got Hit With %.2f",hitPlayer);
-      printf("\nMonster Got Hit With %.2f",hitMonster);
+      printf("\n|     Player Got Hit With|    %8.2f|",hitPlayer);
+      printf("\n+-------------------------------------+");
+      printf("\n|    Monster Got Hit With|    %8.2f|",hitMonster);
+      printf("\n+-------------------------------------+");
 
       break;
     case '2':
@@ -175,15 +179,18 @@ void fightMonster(Player &player, Character &monster){
       hitPlayer = (MonAtk*1.2 * modifier) -(0.4*playerDef);
       monster.hpDamage(hitMonster);
       player.hpDamage(hitPlayer);
-      printf("\nPlayer Defend majority of Attack You Recieve Hit of %.2f",hitPlayer);
-      printf("\nMonster Got Hit With Recoil Of %.2f",hitMonster);
+      printf("\n|Player Gets Reduced Damage|  %8.2f|",hitPlayer);
+      printf("\n+-------------------------------------+");
+      printf("\n|   Monster Hit With Recoil|  %8.2f|",hitMonster);
+      printf("\n+-------------------------------------+");
 
       break;
     case '3':
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
       player.hpDamage(hitPlayer);
-      printf("\nPlayer Got Hit With %.2f",hitPlayer);
+      printf("\n|     Player Got Hit With|    %8.2f|",hitPlayer);
+      printf("\n+-------------------------------------+");
       player.addPoison(3);
       break;
     default:
@@ -191,7 +198,8 @@ void fightMonster(Player &player, Character &monster){
   }
   if (player.downPoison()) {
       monster.hpDamage(1);
-      printf("\nMonster Poisoned Loses 1 Health");
+      printf("\n|   Monster Poisoned Loses 1 Health   |");
+      printf("\n+-------------------------------------+");
   }
   
   if (player.getLiveHp() <= 0){
