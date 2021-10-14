@@ -159,9 +159,9 @@ void fightMonster(Player &player, Character &monster){
   switch(option) {
     case '1':
       modifier = (((double) rand() / (RAND_MAX)) + 0.5); // 0.5 < r < 1.5
-      hitMonster = playerAtk*1.2 * modifier;
+      hitMonster = (playerAtk*1.2 * modifier) - (0.1*MonDef);
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-      hitPlayer = MonAtk*1.2 * modifier;
+      hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
       monster.hpDamage(hitMonster);
       player.hpDamage(hitPlayer);
       printf("\nPlayer Got Hit With %.2f",hitPlayer);
@@ -170,9 +170,9 @@ void fightMonster(Player &player, Character &monster){
       break;
     case '2':
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-      hitMonster = playerDef*0.2 * modifier;
+      hitMonster = (playerDef*0.9 * modifier)  - (0.1*MonDef);
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-      hitPlayer = MonAtk*0.75 * modifier;
+      hitPlayer = (MonAtk*1.2 * modifier) -(0.4*playerDef);
       monster.hpDamage(hitMonster);
       player.hpDamage(hitPlayer);
       printf("\nPlayer Defend majority of Attack You Recieve Hit of %.2f",hitPlayer);
@@ -181,7 +181,7 @@ void fightMonster(Player &player, Character &monster){
       break;
     case '3':
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-      hitPlayer = MonAtk*1.2 * modifier;
+      hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
       player.hpDamage(hitPlayer);
       printf("\nPlayer Got Hit With %.2f",hitPlayer);
       player.addPoison(3);

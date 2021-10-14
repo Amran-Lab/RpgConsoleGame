@@ -63,8 +63,8 @@ in the woods.
 
 /*
 TODO:
-Add Monsters and their Events:
-Add Fighting Capability
-Split Player Obj ->
-Item/Gem -> Monster -> Player
+Improve Fight Mech
+Add Items
+Add Levels
+Add Escape;
 */
