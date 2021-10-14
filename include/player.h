@@ -31,13 +31,23 @@ class Gem: public Sprite {
 
 class Character: public Sprite {
   public:
-    Character(int initPosX,int initPosY) : Sprite(initPosX,initPosY){
+    Character(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : Sprite(initPosX,initPosY){
+      atk = initAtk;
+      def = initDef;
+      hp = initHp;
+      liveHp = initHp;
     }
+    void resetLiveHp(){liveHp = hp;}
+    void hpDamage(float damage){liveHp -= damage;}
+    int getAtk(void){return atk;}
+    int getDef(void){return def;}
+    float getLiveHp(void){return liveHp;}
 
   protected:
     int atk = 1;
     int def = 1;
     int hp = 10;
+    float liveHp;
 };
 
 class Player: public Character {
@@ -45,12 +55,11 @@ class Player: public Character {
   private:
     int fightState = 0;  // 0 = NoFight 1 = WIn, 2= Loss
     int score = 0;
+    int poisonCounter = 0;
 
   public:
-    Player(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : Character(initPosX,initPosY){
-      atk = initAtk;
-      def = initDef;
-      hp = initHp;
+    Player(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : 
+    Character(initPosX,initPosY,initAtk,initDef,initHp){
     }
 
     void movePlayer(char option){
@@ -87,8 +96,6 @@ class Player: public Character {
       }
     }
 
-    int getAtk(void){return atk;}
-    int getDef(void){return def;}
     int getHp(void){return hp;}
     void upAtk(void){
       if (score > 0){atk++;
@@ -127,6 +134,16 @@ class Player: public Character {
     
     void fightOutcome(int state){fightState = state;}
     int getFight(void){return fightState;}
+    
+    void addPoison(int poison){poisonCounter += poison;}
+    bool downPoison(void){
+      if (poisonCounter > 0){
+        poisonCounter--;
+        return true;
+      }
+      return false;
+    }
+    void resetPoison(void){poisonCounter=0;}
 
 };
 #endif

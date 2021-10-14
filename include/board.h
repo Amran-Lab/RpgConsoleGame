@@ -31,3 +31,8 @@ class Board {
 
 };
 #endif
+/*
+TO DO:
+MAYBE REFERENCE WRAP GEM/PLAYER/MONSTER CONTAIN
+IN BOARD 
+*/

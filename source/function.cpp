@@ -40,19 +40,20 @@ void drawBoard(Board &board,Player &player, Gem &gem){
       player.upScore();
       printf("You Gained A Gem\n");
     }
-    if(encounterMonster()){
-          fightMonster(player);
-    }
+    encounterMonster();
   }
 }
 
 void drawMenu(Player &player){
   printf("\033c");
-  printf("Number of Gems: %d", player.getScore());
+  displayStats(player);
   char option;
-  printf("\nPress A to change Weapon and Armour");
-  printf("\nPress S to Increase Stats ");
-  printf("\nPres Q to quit: ");
+  printf("\n| Press A to change Weapon and Armour |");
+  printf("\n+-------------------------------------+");
+  printf("\n|     Press S to Increase Stats       |");
+  printf("\n+-------------------------------------+");
+  printf("\n|           Pres Q to quit:           |");
+  printf("\n+-------------------------------------+\n");
   cin >> option;
   switch(option) {
     case 'A':
@@ -83,11 +84,16 @@ void statMenu(Player &player){
   char option;
   printf("\033c");
   displayStats(player);
-  printf("\nSpend Gems to increase stats");
-  printf("\nPress 1 to Increase Attack");
-  printf("\nPress 2 to Increase Defence");
-  printf("\nPress 3 to Increase Health");
-  printf("\nPress M for Menu or Q to Adventure: ");
+  printf("\n|     Spend Gems to increase stats    |");
+  printf("\n+-------------------------------------+");
+  printf("\n|     Press 1 to Increase Attack      |");
+  printf("\n+-------------------------------------+");
+  printf("\n|     Press 2 to Increase Defence     |");
+  printf("\n+-------------------------------------+");
+  printf("\n|     Press 3 to Increase Health      |");
+  printf("\n+-------------------------------------+");
+  printf("\n|  Press M for Menu or Q to Adventure |");
+  printf("\n+-------------------------------------+\n");
   cin >> option;
   switch(option) {
     case 'M':
@@ -124,78 +130,89 @@ bool encounterMonster(void){
     // Use a while loop together with the getline() function to read the file line by line
     //if (f.is_open())
       //  std::cout << f.rdbuf();
+      gameState = Fighting;
     return true;
   }
   return false;
 }
 
-void fightMonster(Player &player){
-  float playerHp = player.getHp();
+void fightMonster(Player &player, Character &monster){
+  float playerHp = player.getLiveHp();
   int playerDef = player.getDef();
   int playerAtk = player.getAtk();
-  float MonHp = level * 20;
-  int MonAtk = level * 5;
-  int MonDef = level * 1;
-  int poisonCounter = 0;
+
+  float MonHp = monster.getLiveHp();
+  int MonAtk = monster.getAtk();
+  int MonDef = monster.getDef();
+
   float modifier;
   float hitMonster,hitPlayer;
   char option;
-  while((playerHp > 0) && (MonHp > 0)){
-    printf("\nPlayer Health: %.2f",playerHp);
-    printf("\nMonster Health: %.2f",MonHp);
-    printf("\nPress 1 to Attack");
-    printf("\nPress 2 to Defend");
-    printf("\nPress 3 to Poison");
-    cin >> option;
-    printf("\n------------------");
-    switch(option) {
-      case '1':
-        modifier = (((double) rand() / (RAND_MAX)) + 0.5); // 0.5 < r < 1.5
-        hitMonster = playerAtk*1.2 * modifier;
-        modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-        hitPlayer = MonAtk*1.2 * modifier;
-        MonHp -= hitMonster;
-        playerHp -= hitPlayer;
-        printf("\nPlayer Got Hit With %.2f",hitPlayer);
-        printf("\nMonster Got Hit With %.2f",hitMonster);
 
-        break;
-      case '2':
-        modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-        hitMonster = playerDef*0.2 * modifier;
-        modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-        hitPlayer = MonAtk*0.75 * modifier;
-        MonHp -= hitMonster;
-        playerHp -= hitPlayer;
-        printf("\nPlayer Defend majority of Attack You Recieve Hit of %.2f",hitPlayer);
-        printf("\nMonster Got Hit With Recoil Of %.2f",hitMonster);
+  printf("\nPlayer Health: %.2f",player.getLiveHp());
+  printf("\nMonster Health: %.2f",monster.getLiveHp());
+  printf("\nPress 1 to Attack");
+  printf("\nPress 2 to Defend");
+  printf("\nPress 3 to Poison");
+  cin >> option;
+  printf("\n------------------");
+  switch(option) {
+    case '1':
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5); // 0.5 < r < 1.5
+      hitMonster = playerAtk*1.2 * modifier;
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5);
+      hitPlayer = MonAtk*1.2 * modifier;
+      monster.hpDamage(hitMonster);
+      player.hpDamage(hitPlayer);
+      printf("\nPlayer Got Hit With %.2f",hitPlayer);
+      printf("\nMonster Got Hit With %.2f",hitMonster);
 
-        break;
-      case '3':
-        modifier = (((double) rand() / (RAND_MAX)) + 0.5);
-        hitPlayer = MonAtk*1.2 * modifier;
-        playerHp -= hitPlayer;
-        printf("\nPlayer Got Hit With %.2f",hitPlayer);
-        poisonCounter += 3;
-        break;
-      default:
-        break;
-    }
-    if (poisonCounter > 0) {
-      poisonCounter--;
-      MonHp -= 1;
+      break;
+    case '2':
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5);
+      hitMonster = playerDef*0.2 * modifier;
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5);
+      hitPlayer = MonAtk*0.75 * modifier;
+      monster.hpDamage(hitMonster);
+      player.hpDamage(hitPlayer);
+      printf("\nPlayer Defend majority of Attack You Recieve Hit of %.2f",hitPlayer);
+      printf("\nMonster Got Hit With Recoil Of %.2f",hitMonster);
+
+      break;
+    case '3':
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5);
+      hitPlayer = MonAtk*1.2 * modifier;
+      player.hpDamage(hitPlayer);
+      printf("\nPlayer Got Hit With %.2f",hitPlayer);
+      player.addPoison(3);
+      break;
+    default:
+      break;
+  }
+  if (player.downPoison()) {
+      monster.hpDamage(1);
       printf("\nMonster Poisoned Loses 1 Health");
-    }
   }
-  if (playerHp>0){
-    player.upScore();
-    player.upScore();
-    player.upScore();
-    player.fightOutcome(1);
-  }
-  else{
+  
+  if (player.getLiveHp() <= 0){
     player.downScore();
-    player.fightOutcome(2);
+    player.fightOutcome(2);   // Player Loss
+    player.resetPoison();
+    player.resetLiveHp();   // Reset HP
+    monster.resetLiveHp();
+    gameState = Adventure;
   }
+
+  else if (monster.getLiveHp() <= 0){
+    player.upScore();       // More Gems
+    player.upScore();
+    player.upScore();
+    player.fightOutcome(1); // Player Win
+    player.resetPoison();   // reset Poison Counter
+    player.resetLiveHp();   // Reset HP
+    monster.resetLiveHp();
+    gameState = Adventure;
+  }
+  
   
 }

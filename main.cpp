@@ -13,6 +13,7 @@ int main() {
 
   Board board;
   Player player = Player(0,0,7,3,30);
+  Character monster = Character(0,0,5,3,20);
   Gem gem = Gem(8,5);;
   board = Board();
 
@@ -38,6 +39,9 @@ int main() {
         else if ((toupper(option) == 'Q')) {
           gameState = Adventure;
         }
+      case Fighting:
+        fightMonster(player,monster);
+        break;
       default:
         break;
     }

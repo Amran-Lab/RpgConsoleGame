@@ -9,6 +9,6 @@ void drawMenu(Player &player);
 void displayStats(Player &player);
 void statMenu(Player &player);
 bool encounterMonster(void);
-void fightMonster(Player &player);
+void fightMonster(Player &player, Character &monster);
 
 #endif
