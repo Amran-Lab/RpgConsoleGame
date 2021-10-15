@@ -11,6 +11,6 @@ void statMenu(Player &player);
 bool encounterMonster(Player &player);
 void fightMonster(Player &player, Character &monster);
 void displayShop(void);
-void pickItem(Player &player,char option);
+std::string pickItem(Player &player,char option);
 
 #endif

@@ -248,12 +248,14 @@ void displayShop(void){
   printf("\n+-------------------------------------+\n");
 }
 
-void pickItem(Player &player,char option){
+std::string pickItem(Player &player,char option){
   if ((toupper(option) == 'M')){
     gameState = Menu;
+    return "Return To Menu\n";
   }
   else if ((toupper(option) == 'Q')){
     gameState = Adventure;
+    return "Return To Adventure\n";
   }
   std::string s(1, option);
   int number = std::atoi(s.c_str());  // Str to Int
@@ -261,7 +263,11 @@ void pickItem(Player &player,char option){
     if(!shopItems[number-1].bought){
         if (player.downScore(shopItems[number-1].cost)){
           shopItems[number-1].bought = true;
+          return "|              Item Bought            |\n+-------------------------------------+\n";
         }
+        return "|            Not Enough Gem           |\n+-------------------------------------+\n";
     }
+    return "|         Item Already Bought         |\n+-------------------------------------+\n";
   }
+  return "|       No Valid Input Try Again      |\n+-------------------------------------+\n";
 }

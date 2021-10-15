@@ -14,6 +14,7 @@ std::vector<Armour> shopItems;
 int main() {
   bool gameFlag = true;
   char option;
+  string output = "";
   
   Board board;
   Player player = Player(0,0,5,5,50);
@@ -40,8 +41,10 @@ int main() {
         printf("                  SHOP:\n");
         displayStats(player);
         displayShop();
+        printf("%s",output.c_str());
+        output = "";
         cin >> option;
-        pickItem(player,option);
+        output = pickItem(player,option);
         break;
       case Fighting:
         fightMonster(player,monster);
