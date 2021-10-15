@@ -54,7 +54,7 @@ class Player: public Character {
 
   private:
     int fightState = 0;  // 0 = NoFight 1 = WIn, 2= Loss
-    int score = 230;
+    int score = 650;
     int poisonCounter = 0;
 
   public:

@@ -4,6 +4,7 @@
 #include "../include/gamestate.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 State gameState = Adventure;
 Level level = Lvl_1;
@@ -223,6 +224,7 @@ void displayShop(void){
   string buy;
   string increaseMessage;
   string sign;
+  int i = 1;
   for(Armour armour : shopItems){
     if(armour.bought){buy = "Bought";} else{buy ="Buy: " + to_string(armour.cost);}
     if(armour.armour){
@@ -232,73 +234,34 @@ void displayShop(void){
       increaseMessage = "% damage dealt";
       sign = "+";
     }
-    printf("\n%s %s%d%s %s",armour.armourName.c_str(),sign.c_str(),armour.increase,increaseMessage.c_str(),buy.c_str());
+    if(armour.bought){
+      printf("\n|%d|%s %s%d%s Bought",i,armour.armourName.c_str(),sign.c_str(),armour.increase,increaseMessage.c_str());
+    } else{
+      printf("\n|%d|%s %s%d%s Buy: %d",i,armour.armourName.c_str(),sign.c_str(),armour.increase,increaseMessage.c_str(),armour.cost);
+    }
+    i++;
   }
-  for (int i = 0; i!=shopItems.size(); i++){
-    printf("\nPress %d for %s",i+1,shopItems[i].armourName.c_str());
-  }
-  printf("\nOr Press M for Menu or Q to Adventure");
+  printf("\n+-------------------------------------+");
+  printf("\n| Press Corresponding Number for Item |");
+  printf("\n+-------------------------------------+");
+  printf("\n|  Press M for Menu or Q to Adventure |");
+  printf("\n+-------------------------------------+\n");
 }
+
 void pickItem(Player &player,char option){
-    switch(option) {
-    case '1':
-      if(!shopItems[0].bought){
-        if (player.downScore(20)){
-          shopItems[0].bought = true;
+  if ((toupper(option) == 'M')){
+    gameState = Menu;
+  }
+  else if ((toupper(option) == 'Q')){
+    gameState = Adventure;
+  }
+  std::string s(1, option);
+  int number = std::atoi(s.c_str());  // Str to Int
+  if((number >0) && (number-1<shopItems.size())){
+    if(!shopItems[number-1].bought){
+        if (player.downScore(shopItems[number-1].cost)){
+          shopItems[number-1].bought = true;
         }
-      }
-      break;
-    case '2':
-      if(!shopItems[1].bought){
-        if (player.downScore(shopItems[1].cost)){
-          shopItems[1].bought = true;
-        }
-      }
-      break;
-    case '3':
-      if(!shopItems[2].bought){
-        if (player.downScore(shopItems[2].cost)){
-          shopItems[2].bought = true;
-        }
-      }
-      break;
-    case '4':
-      if(!shopItems[3].bought){
-        if (player.downScore(shopItems[3].cost)){
-          shopItems[3].bought = true;
-        }
-      }
-      break;
-    case '5':
-      if(!shopItems[4].bought){
-        if (player.downScore(shopItems[4].cost)){
-          shopItems[4].bought = true;
-        }
-      }
-      break;
-    case '6':
-      if(!shopItems[5].bought){
-        if (player.downScore(shopItems[5].cost)){
-          shopItems[5].bought = true;
-        }
-      }
-      break;
-    case '7':
-      if(!shopItems[6].bought){
-        if (player.downScore(shopItems[6].cost)){
-          shopItems[6].bought = true;
-        }
-      }
-      break;
-    case 'M':
-    case 'm':
-      gameState = Menu;
-      break;
-    case 'Q':
-    case 'q':
-      gameState = Adventure;
-      break;
-    default:
-      break;
+    }
   }
 }
