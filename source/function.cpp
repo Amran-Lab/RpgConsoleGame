@@ -29,7 +29,6 @@ void drawBoard(Board &board,Player &player, Gem &gem){
     player.fightOutcome(0);
   }
 
-  // encounterMonster();
   cin >> option;
   if ((toupper(option) == 'M')){
     gameState = Menu;
@@ -37,7 +36,7 @@ void drawBoard(Board &board,Player &player, Gem &gem){
   else if ((toupper(option) == 'W') || (toupper(option) == 'A') || (toupper(option) == 'S') || (toupper(option) == 'D')){
     player.movePlayer(option);
     if (gem.collision(player.getPosX(), player.getPosY())){
-      player.upScore();
+      player.upScore(1);
       printf("You Gained A Gem\n");
     }
     encounterMonster(player);
@@ -74,7 +73,7 @@ void drawMenu(Player &player){
 }
 void displayStats(Player &player){
   printf("+-------------------------------------+");
-  printf("\n|           Number Of Gems: %d         |", player.getScore());
+  printf("\n|           Number Of Gems: %-5d     |", player.getScore());
   printf("\n+-------------------------------------+");
   printf("\n| Health: %d | Attack: %d | Defence: %d |",player.getHp(),player.getAtk(),player.getDef());
   printf("\n+-------------------------------------+");
@@ -203,7 +202,7 @@ void fightMonster(Player &player, Character &monster){
   }
 printf("\n+-------------------------------------+");
   if (player.getLiveHp() <= 0){
-    player.downScore();
+    player.downScore(1);
     player.fightOutcome(2);   // Player Loss
     player.resetPoison();
     player.resetLiveHp();   // Reset HP
@@ -212,15 +211,94 @@ printf("\n+-------------------------------------+");
   }
 
   else if (monster.getLiveHp() <= 0){
-    player.upScore();       // More Gems
-    player.upScore();
-    player.upScore();
+    player.upScore(3);       // More Gems
     player.fightOutcome(1); // Player Win
     player.resetPoison();   // reset Poison Counter
     player.resetLiveHp();   // Reset HP
     monster.resetLiveHp();
     gameState = Adventure;
+  } 
+}
+void displayShop(void){
+  string buy;
+  string increaseMessage;
+  string sign;
+  for(Armour armour : shopItems){
+    if(armour.bought){buy = "Bought";} else{buy ="Buy: " + to_string(armour.cost);}
+    if(armour.armour){
+      increaseMessage = "% damage recieved";
+      sign = "-";
+    } else {
+      increaseMessage = "% damage dealt";
+      sign = "+";
+    }
+    printf("\n%s %s%d%s %s",armour.armourName.c_str(),sign.c_str(),armour.increase,increaseMessage.c_str(),buy.c_str());
   }
-  
-  
+  for (int i = 0; i!=shopItems.size(); i++){
+    printf("\nPress %d for %s",i+1,shopItems[i].armourName.c_str());
+  }
+  printf("\nOr Press M for Menu or Q to Adventure");
+}
+void pickItem(Player &player,char option){
+    switch(option) {
+    case '1':
+      if(!shopItems[0].bought){
+        if (player.downScore(20)){
+          shopItems[0].bought = true;
+        }
+      }
+      break;
+    case '2':
+      if(!shopItems[1].bought){
+        if (player.downScore(shopItems[1].cost)){
+          shopItems[1].bought = true;
+        }
+      }
+      break;
+    case '3':
+      if(!shopItems[2].bought){
+        if (player.downScore(shopItems[2].cost)){
+          shopItems[2].bought = true;
+        }
+      }
+      break;
+    case '4':
+      if(!shopItems[3].bought){
+        if (player.downScore(shopItems[3].cost)){
+          shopItems[3].bought = true;
+        }
+      }
+      break;
+    case '5':
+      if(!shopItems[4].bought){
+        if (player.downScore(shopItems[4].cost)){
+          shopItems[4].bought = true;
+        }
+      }
+      break;
+    case '6':
+      if(!shopItems[5].bought){
+        if (player.downScore(shopItems[5].cost)){
+          shopItems[5].bought = true;
+        }
+      }
+      break;
+    case '7':
+      if(!shopItems[6].bought){
+        if (player.downScore(shopItems[6].cost)){
+          shopItems[6].bought = true;
+        }
+      }
+      break;
+    case 'M':
+    case 'm':
+      gameState = Menu;
+      break;
+    case 'Q':
+    case 'q':
+      gameState = Adventure;
+      break;
+    default:
+      break;
+  }
 }

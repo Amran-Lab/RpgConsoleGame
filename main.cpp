@@ -7,15 +7,22 @@
 
 using namespace std;
 
+
+std::vector<Armour> shopItems;
+
+
 int main() {
   bool gameFlag = true;
   char option;
-
+  
   Board board;
   Player player = Player(0,0,5,5,50);
   Character monster = Character(0,0,5,5,40);
   Gem gem = Gem(8,5);;
   board = Board();
+
+  shopItems = {{"Full Helm",true,5,25,false},{"Platebody",true,10,25,false},{"Platelegs",true,5,25,false},{"Kiteshield",true,5,25,false},{"Iron Sword",false,5,25,false},{"Mithril Sword",false,10,100},{"Adamant Sword",false,40,500,false}};
+
 
   while (gameFlag){
     switch(gameState) {
@@ -30,15 +37,12 @@ int main() {
         break;
       case Items:
         printf("\033c");
-        printf("Your Items Are: ");
-        printf("\nPress M for Menu or Q to Adventure");
+        printf("                  SHOP:\n");
+        displayStats(player);
+        displayShop();
         cin >> option;
-        if ((toupper(option) == 'M')){
-          gameState = Menu;
-        }
-        else if ((toupper(option) == 'Q')) {
-          gameState = Adventure;
-        }
+        pickItem(player,option);
+        break;
       case Fighting:
         fightMonster(player,monster);
         break;

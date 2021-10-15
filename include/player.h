@@ -2,7 +2,7 @@
 using namespace std;
 #ifndef PLAYER_H
 #define PLAYER_H
-class Sprite {
+class Sprite { // Abstract
   protected:
   int posX,posY;
   public:
@@ -54,7 +54,7 @@ class Player: public Character {
 
   private:
     int fightState = 0;  // 0 = NoFight 1 = WIn, 2= Loss
-    int score = 0;
+    int score = 230;
     int poisonCounter = 0;
 
   public:
@@ -124,11 +124,13 @@ class Player: public Character {
       }
     }
     
-    void upScore(void){score++;}
-    void downScore(void){
-      if (score > 0){
-        score--;
+    void upScore(int plus){score += plus;}
+    bool downScore(int minus){
+      if ((score - minus)>= 0 ){
+        score -=minus;
+        return true;
       }
+      return false;
     }
     int getScore(void){return score;}
     

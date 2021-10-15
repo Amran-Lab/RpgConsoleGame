@@ -10,5 +10,7 @@ void displayStats(Player &player);
 void statMenu(Player &player);
 bool encounterMonster(Player &player);
 void fightMonster(Player &player, Character &monster);
+void displayShop(void);
+void pickItem(Player &player,char option);
 
 #endif
