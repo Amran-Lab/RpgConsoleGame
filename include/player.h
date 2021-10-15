@@ -54,8 +54,10 @@ class Player: public Character {
 
   private:
     int fightState = 0;  // 0 = NoFight 1 = WIn, 2= Loss
-    int score = 650;
+    int score = 800;
     int poisonCounter = 0;
+    float damReduct = 0.00;
+    float damInc = 0.00;
 
   public:
     Player(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : 
@@ -146,6 +148,10 @@ class Player: public Character {
       return false;
     }
     void resetPoison(void){poisonCounter=0;}
+    float getDamReduct(){return damReduct;}
+    float getDamInc(){return damInc;}
+    void setDamReduct(float red){damReduct += red;}
+    void setDamInc(float inc){damInc += inc;}
 
 };
 #endif

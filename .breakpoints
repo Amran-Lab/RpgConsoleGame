@@ -1,10 +1,18 @@
 {
   "files": {
+    "main.cpp": [
+      {
+        "id": "d1b8ef26-54f2-4bc4-a7cc-cc694c86b049",
+        "line": 18,
+        "version": 3850,
+        "index": 286
+      }
+    ],
     "source/function.cpp": [
       {
         "id": "76a05232-a6ee-4c24-8354-ce0e98393f3b",
         "line": 16,
-        "version": 4214,
+        "version": 4778,
         "index": 439
       }
     ]

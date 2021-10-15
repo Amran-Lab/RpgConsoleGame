@@ -18,11 +18,11 @@ int main() {
   
   Board board;
   Player player = Player(0,0,5,5,50);
-  Character monster = Character(0,0,5,5,40);
+  Character monster = Character(0,0,5,5,50);
   Gem gem = Gem(8,5);;
   board = Board();
 
-  shopItems = {{"Full Helm",true,5,25,false},{"Platebody",true,10,25,false},{"Platelegs",true,5,25,false},{"Kiteshield",true,5,25,false},{"Iron Sword",false,5,25,false},{"Mithril Sword",false,10,100},{"Adamant Sword",false,40,500,false}};
+  shopItems = {{"Full Helm",true,5,25,false},{"Platebody",true,10,25,false},{"Platelegs",true,12,25,false},{"Kiteshield",true,5,25,false},{"Iron Sword",false,5,25,false},{"Mithril Sword",false,10,100},{"Adamant Sword",false,40,500,false}};
 
 
   while (gameFlag){

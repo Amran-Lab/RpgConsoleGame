@@ -76,7 +76,12 @@ void displayStats(Player &player){
   printf("+-------------------------------------+");
   printf("\n|           Number Of Gems: %-5d     |", player.getScore());
   printf("\n+-------------------------------------+");
-  printf("\n| Health: %d | Attack: %d | Defence: %d |",player.getHp(),player.getAtk(),player.getDef());
+  printf("\n| Health:%-4d| Attack:%-3d| Defence:%-3d|",player.getHp(),player.getAtk(),player.getDef());
+  printf("\n+-------------------------------------+");
+  printf("\n|         Damage Reduction| %3.2g%%      |",player.getDamReduct()*100);
+  printf("\n+-------------------------------------+");
+  printf("\n|          Damage Increase| %3.2g%%      |", 
+  player.getDamInc()*100);
   printf("\n+-------------------------------------+");
 }
 
@@ -164,8 +169,8 @@ void fightMonster(Player &player, Character &monster){
       hitMonster = (playerAtk*1.2 * modifier) - (0.1*MonDef);
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
-      monster.hpDamage(hitMonster);
-      player.hpDamage(hitPlayer);
+      monster.hpDamage(hitMonster*(player.getDamInc() + 1));
+      player.hpDamage(hitPlayer*(1-player.getDamReduct()));
       printf("\n|      Player Got Hit With | %-8.2f |",hitPlayer);
       printf("\n+-------------------------------------+");
       printf("\n|     Monster Got Hit With | %-8.2f |",hitMonster);
@@ -177,8 +182,8 @@ void fightMonster(Player &player, Character &monster){
       hitMonster = (playerDef*0.9 * modifier)  - (0.1*MonDef);
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
       hitPlayer = (MonAtk*1.2 * modifier) -(0.4*playerDef);
-      monster.hpDamage(hitMonster);
-      player.hpDamage(hitPlayer);
+      monster.hpDamage(hitMonster*(player.getDamInc() + 1));
+      player.hpDamage(hitPlayer*(1-player.getDamReduct()));
       printf("\n| Player Reduced Damage of | %-8.2f |",hitPlayer);
       printf("\n+-------------------------------------+");
       printf("\n|  Monster Hit With Recoil | %-8.2f |",hitMonster);
@@ -188,7 +193,7 @@ void fightMonster(Player &player, Character &monster){
     case '3':
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
-      player.hpDamage(hitPlayer);
+      player.hpDamage(hitPlayer*(1-player.getDamReduct()));
       printf("\n|      Player Got Hit With | %-8.2f |",hitPlayer);
       printf("\n+-------------------------------------+");
       player.addPoison(3);
@@ -249,6 +254,7 @@ void displayShop(void){
 }
 
 std::string pickItem(Player &player,char option){
+  float inc;
   if ((toupper(option) == 'M')){
     gameState = Menu;
     return "Return To Menu\n";
@@ -263,6 +269,8 @@ std::string pickItem(Player &player,char option){
     if(!shopItems[number-1].bought){
         if (player.downScore(shopItems[number-1].cost)){
           shopItems[number-1].bought = true;
+          inc = shopItems[number-1].increase / 100.00;
+          shopItems[number-1].armour ? player.setDamReduct(inc) : player.setDamInc(inc) ;
           return "|              Item Bought            |\n+-------------------------------------+\n";
         }
         return "|            Not Enough Gem           |\n+-------------------------------------+\n";
