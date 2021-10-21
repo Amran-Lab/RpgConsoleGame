@@ -12,6 +12,7 @@ std::vector<Armour> shopItems;
 
 
 int main() {
+  char start;
   bool gameFlag = true;
   char option;
   std::string output = "";
@@ -24,8 +25,8 @@ int main() {
 
   shopItems = {{"Full Helm",true,5,25,false},{"Platebody",true,10,25,false},{"Platelegs",true,12,25,false},{"Kiteshield",true,5,25,false},{"Iron Sword",false,5,25,false},{"Mithril Sword",false,10,100},{"Adamant Sword",false,40,500,false}};
 
-  
-
+  printf("A robot crash lands on earth.\nThe ship and robot are both damaged and low on fuel.\nCollect gems by defeating monsters and finding gems\nUse the gems to refuel and repair yourself and the ship.\nPress Any Key to Start: ");
+  cin >> start;
 
   while (gameFlag){
     switch(gameState) {
@@ -56,7 +57,7 @@ int main() {
         break;
       case EndGame:
         printf("\033c");
-        printf("The Game Has Finished");
+        printf("Congrats - The Game Has Finished");
         gameFlag = false;
         break;
       default:
@@ -65,22 +66,10 @@ int main() {
   }
 }
 
-/**
-*  STORY:
-*
-* ROBOT Crash lands on Earth - Is damaged and ship is low
-* on fuel.
-*
-* Collects Diamonds to increase ROBOT strength
-* and 100,000 Diamonds for escape.
-*
-* The forest is dangerous as many dangerous monsters lurk
-* in the woods.
-*/
 
 /**
 * TODO:
-*   1.Add Into And End Screen
+*   1.Add Into And End Screen - Done
 *   2.Monster Level Changes
 *   3.Buy Alterns For Poison
 *   4.Different Biomes For Diff Levels

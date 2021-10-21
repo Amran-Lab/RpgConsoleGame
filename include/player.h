@@ -161,16 +161,16 @@ class Player: public Character {
       printf("\nCurrent Gem Multiplier %d",gemMultiplier);
       switch(level) {
         case level_1:
-          printf("\nYou Are in Level 1\nPay %d Gem to go to Level 2",Level::level_2);
+          printf("\nYou Are in Level 1\nPay %d Gems to go to Level 2",Level::level_2);
           break;
         case level_2:
-          printf("\nYou Are in Level 2\nPay %d Gem to go to Level 3",Level::level_3);
+          printf("\nYou Are in Level 2\nPay %d Gems to go to Level 3",Level::level_3);
           break;
         case level_3:
-           printf("\nYou Are in Level 3\nPay %d Gem to go to Level 4",Level::level_4);
+           printf("\nYou Are in Level 3\nPay %d Gems to go to Level 4",Level::level_4);
           break;
         case level_4:
-          printf("\nYou Are in Level 4\nPay %d Gem to end game",Level::end_game);
+          printf("\nYou Are in Level 4\nPay %d Gems to fix the ship and end the game",Level::end_game);
           break;
         default:
           break;
