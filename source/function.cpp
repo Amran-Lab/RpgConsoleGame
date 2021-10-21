@@ -7,7 +7,6 @@
 #include <string>
 
 State gameState = Adventure;
-Level level = Lvl_1;
 
 void drawBoard(Board &board,Player &player, Gem &gem){
   char option;
@@ -20,7 +19,7 @@ void drawBoard(Board &board,Player &player, Gem &gem){
   printf("\n| WASD To move character  M for Menu  |");
   printf("\n+-------------------------------------+\n");
   if (player.getFight() == 1){                    // listener if a fight happens
-    printf("|    DEFEATED MONSTER - GAIN 3 GEMS   |");
+    printf("|  DEFEATED MONSTER - GAIN %-5d GEMS |",player.getMulitplier()*3);
     printf("\n+-------------------------------------+\n");
     player.fightOutcome(0);
   }
@@ -52,13 +51,16 @@ void drawMenu(Player &player){
   printf("\n+-------------------------------------+");
   printf("\n|     Press S to Increase Stats       |");
   printf("\n+-------------------------------------+");
+  printf("\n|       Pres L to Change Level        |");
+  printf("\n+-------------------------------------+");
   printf("\n|           Pres Q to quit:           |");
   printf("\n+-------------------------------------+\n");
   cin >> option;
   switch(option) {
     case 'A':
     case 'a':
-      gameState = Items;
+      gameState = 
+      Items;
       break;
     case 'S':
     case 's':
@@ -67,6 +69,10 @@ void drawMenu(Player &player){
     case 'Q':
     case 'q':
       gameState = Adventure;
+      break;
+    case 'L':
+    case 'l':
+      gameState = ChangeLevel;
       break;
     default:
       break;
@@ -125,7 +131,7 @@ void statMenu(Player &player){
 
 bool encounterMonster(Player &player){
   int chance = (rand() % 100) + 1;
-  if (chance <= 60){
+  if (chance <= 25){
     
     //string myText;
     //std::ifstream f("ascii.txt");
@@ -278,4 +284,21 @@ std::string pickItem(Player &player,char option){
     return "|         Item Already Bought         |\n+-------------------------------------+\n";
   }
   return "|       No Valid Input Try Again      |\n+-------------------------------------+\n";
+}
+
+std::string drawLevel(Player &player){
+  char option;
+  printf("\033c");
+  displayStats(player);
+  player.showLevel();
+  printf("\npress Y for yes and N for No: ");
+  cin >> option;
+  if ((toupper(option) == 'Y')){
+    if(player.nextLevel()){
+      return "\nBought";
+    }
+    return "\nNot Enough Gems";
+  }
+  gameState = Menu;
+  return "";
 }

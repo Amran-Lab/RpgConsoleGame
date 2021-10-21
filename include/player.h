@@ -1,4 +1,5 @@
-#include <iostream> 
+#include <iostream>
+#include "../include/gamestate.h"
 using namespace std;
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -58,6 +59,8 @@ class Player: public Character {
     int poisonCounter = 0;
     float damReduct = 0.00;
     float damInc = 0.00;
+    int gemMultiplier = 1;
+    Level level = level_1;
 
   public:
     Player(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : 
@@ -126,7 +129,7 @@ class Player: public Character {
       }
     }
     
-    void upScore(int plus){score += plus;}
+    void upScore(int plus){score += plus*gemMultiplier;}
     bool downScore(int minus){
       if ((score - minus)>= 0 ){
         score -=minus;
@@ -152,6 +155,72 @@ class Player: public Character {
     float getDamInc(){return damInc;}
     void setDamReduct(float red){damReduct += red;}
     void setDamInc(float inc){damInc += inc;}
+
+    int getMulitplier(void){return gemMultiplier;}
+    void showLevel(void){
+      printf("\nCurrent Gem Multiplier %d",gemMultiplier);
+      switch(level) {
+        case level_1:
+          printf("\nYou Are in Level 1\nPay %d Gem to go to Level 2",Level::level_2);
+          break;
+        case level_2:
+          printf("\nYou Are in Level 2\nPay %d Gem to go to Level 3",Level::level_3);
+          break;
+        case level_3:
+           printf("\nYou Are in Level 3\nPay %d Gem to go to Level 4",Level::level_4);
+          break;
+        case level_4:
+          printf("\nYou Are in Level 4\nPay %d Gem to end game",Level::end_game);
+          break;
+        default:
+          break;
+      }
+    }
+
+    bool nextLevel(void){
+      switch(level) {
+        case level_1:
+          if(downScore(Level::level_2)){
+            level = level_2;
+            gemMultiplier = 10;
+            return true;
+          }
+          return false;
+          break;
+        case level_2:
+          if(downScore(Level::level_3)){
+            level = level_3;
+            gemMultiplier = 100;
+            return true;
+          }
+          return false;
+          break;
+        case level_3:
+          if(downScore(Level::level_4)){
+            level = level_4;
+            gemMultiplier = 10000;
+            return true;
+          }
+          return false;
+          break;
+        case level_4:
+          if(downScore(Level::end_game)){
+            level = end_game;
+            gameState = EndGame;
+            gemMultiplier = 1;
+            return true;
+          }
+          return false;
+          break;
+        case end_game:
+          level = level_1;
+          gameState = Adventure;
+          return true;
+          break;
+        default:
+          break;
+    }
+  }
 
 };
 #endif

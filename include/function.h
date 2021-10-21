@@ -12,5 +12,6 @@ bool encounterMonster(Player &player);
 void fightMonster(Player &player, Character &monster);
 void displayShop(void);
 std::string pickItem(Player &player,char option);
+std::string drawLevel(Player &player);
 
 #endif
