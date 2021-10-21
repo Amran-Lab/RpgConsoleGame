@@ -65,23 +65,25 @@ int main() {
   }
 }
 
-/*
-STORY:
-
-ROBOT Crash lands on Earth - Is damaged and ship is low
-on fuel.
-
-Collects Diamonds to increase ROBOT strength
-and 100,000 Diamonds for escape.
-
-The forest is dangerous as many dangerous monsters lurk
-in the woods.
+/**
+*  STORY:
+*
+* ROBOT Crash lands on Earth - Is damaged and ship is low
+* on fuel.
+*
+* Collects Diamonds to increase ROBOT strength
+* and 100,000 Diamonds for escape.
+*
+* The forest is dangerous as many dangerous monsters lurk
+* in the woods.
 */
 
-/*
-TODO:
-Improve Fight Mech
-Add Items
-Add Levels
-Add Escape;
+/**
+* TODO:
+*   1.Add Into And End Screen
+*   2.Monster Level Changes
+*   3.Buy Alterns For Poison
+*   4.Different Biomes For Diff Levels
+*   5.Monster Movement
+*   6.Make Board Static
 */
