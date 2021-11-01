@@ -1,3 +1,6 @@
+#include "../include/sprite.h"
+#include "../include/gem.h"
+#include "../include/character.h"
 #include "../include/function.h"
 #include "../include/player.h"
 #include "../include/board.h"

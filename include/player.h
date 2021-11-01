@@ -1,55 +1,12 @@
 #include <iostream>
 #include "../include/gamestate.h"
+#include "../include/sprite.h"
+#include "../include/gem.h"
+#include "../include/character.h"
+
 using namespace std;
 #ifndef PLAYER_H
 #define PLAYER_H
-class Sprite { // Abstract
-  protected:
-  int posX,posY;
-  public:
-  Sprite(int initPosX,int initPosY){
-    posX = initPosX;
-    posY = initPosY;
-  }
-  int getPosX(void){return posX;}
-  int getPosY(void){return posY;}
-  void setPos(int x,int y){posX = x;posY =y;}
-};
-
-class Gem: public Sprite {
-  public:
-  Gem(int initPosX,int initPosY) :Sprite(initPosX,initPosY){
-
-  }
-  bool collision(int x,int y){
-      if ((posX == x ) && (posY==y)){
-        setPos(rand() % 10,rand() % 10);
-        return true;
-      }
-      return false;
-  }
-};
-
-class Character: public Sprite {
-  public:
-    Character(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : Sprite(initPosX,initPosY){
-      atk = initAtk;
-      def = initDef;
-      hp = initHp;
-      liveHp = initHp;
-    }
-    void resetLiveHp(){liveHp = hp;}
-    void hpDamage(float damage){liveHp -= damage;}
-    int getAtk(void){return atk;}
-    int getDef(void){return def;}
-    float getLiveHp(void){return liveHp;}
-
-  protected:
-    int atk = 1;
-    int def = 1;
-    int hp = 10;
-    float liveHp;
-};
 
 class Player: public Character {
 
