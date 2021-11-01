@@ -6,28 +6,13 @@ class Board {
   private:
   std::vector<std::vector<std::string>> board;
   public:
-    Board(){
-      initiliazeBoard();
-    }
+    Board();
 
-    void printBoard(){
-      for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-          printf("%s",board[i][j].c_str());
-        }
-        printf("\n");
-      }
-    }
+    void printBoard();
 
-    void drawItem(string item,int posX,int posY){
-      board[posY][posX] = " " + item + " ";
-    }
-    void initiliazeBoard(){
-      board.clear();
-      std::vector<std::string> row = {" \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "," \U0001F333 "};
-      board = {row,row,row,row,row,row,row,row,row,row};
-    }
+    void drawItem(std::string item,int posX,int posY);
 
+    void initiliazeBoard();
 };
 #endif
 /*

@@ -4,12 +4,16 @@
 #include "../include/function.h"
 #include "../include/player.h"
 #include "../include/board.h"
-#include "../include/gamestate.h"
+#include "../include/constants.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 
 State gameState = Adventure;
+
+Level level = level_1;
+
+std::vector<Armour> shopItems = {{"Full Helm",true,5,25,false},{"Platebody",true,10,25,false},{"Platelegs",true,12,25,false},{"Kiteshield",true,5,25,false},{"Iron Sword",false,5,25,false},{"Mithril Sword",false,10,100},{"Adamant Sword",false,40,500,false}};
 
 void drawBoard(Board &board,Player &player, Gem &gem){
   char option;
@@ -81,6 +85,7 @@ void drawMenu(Player &player){
       break;
   }
 }
+
 void displayStats(Player &player){
   printf("+-------------------------------------+");
   printf("\n|           Number Of Gems: %-5d     |", player.getScore());
@@ -151,6 +156,13 @@ bool encounterMonster(Player &player){
 }
 
 void fightMonster(Player &player, Character &monster){
+  // resets player and monster to full health if it is beginning of fight
+  if (player.getFight() == 0){
+    player.resetPoison();   // reset Poison Counter
+    player.resetLiveHp();   // Reset HP
+    monster.resetLiveHp();  // reset Monster
+    player.fightOutcome(1);
+  }
   float playerHp = player.getLiveHp();
   int playerDef = player.getDef();
   int playerAtk = player.getAtk();
@@ -215,25 +227,20 @@ void fightMonster(Player &player, Character &monster){
       printf("\n|   Monster Poisoned Loses 1 Health   |");
       printf("\n+-------------------------------------+");
   }
-printf("\n+-------------------------------------+");
+  printf("\n+-------------------------------------+");
   if (player.getLiveHp() <= 0){
     player.downScore(1);
     player.fightOutcome(2);   // Player Loss
-    player.resetPoison();
-    player.resetLiveHp();   // Reset HP
-    monster.resetLiveHp();
     gameState = Adventure;
   }
 
   else if (monster.getLiveHp() <= 0){
     player.upScore(3);       // More Gems
     player.fightOutcome(1); // Player Win
-    player.resetPoison();   // reset Poison Counter
-    player.resetLiveHp();   // Reset HP
-    monster.resetLiveHp();
     gameState = Adventure;
   } 
 }
+
 void displayShop(void){
   string buy;
   string increaseMessage;
@@ -289,19 +296,88 @@ std::string pickItem(Player &player,char option){
   return "|       No Valid Input Try Again      |\n+-------------------------------------+\n";
 }
 
-std::string drawLevel(Player &player){
+std::string drawLevel(Player &player,Character &monster){
   char option;
   printf("\033c");
   displayStats(player);
-  player.showLevel();
+  showLevel(player);
   printf("\npress Y for yes and N for No: ");
   cin >> option;
   if ((toupper(option) == 'Y')){
-    if(player.nextLevel()){
+    if(nextLevel(player,monster)){
       return "\nBought";
     }
     return "\nNot Enough Gems";
   }
   gameState = Menu;
   return "";
+}
+
+void showLevel(Player &player){
+  printf("\nCurrent Gem Multiplier %d",player.getScore());
+  switch(level) {
+    case level_1:
+      printf("\nYou Are in Level 1\nPay %d Gems to go to Level 2",Level::level_2);
+      break;
+    case level_2:
+      printf("\nYou Are in Level 2\nPay %d Gems to go to Level 3",Level::level_3);
+      break;
+    case level_3:
+        printf("\nYou Are in Level 3\nPay %d Gems to go to Level 4",Level::level_4);
+      break;
+    case level_4:
+      printf("\nYou Are in Level 4\nPay %d Gems to fix the ship and end the game",Level::end_game);
+      break;
+    default:
+      break;
+  }
+}
+
+bool nextLevel(Player &player,Character &monster){
+  switch(level) {
+    case level_1:
+      if(player.downScore(Level::level_2)){
+        level = level_2;
+        player.setMulitplier(10);
+        monster = Character(0,0,10,10,100);
+        return true;
+      }
+      return false;
+      break;
+    case level_2:
+      if(player.downScore(Level::level_3)){
+        level = level_3;
+        player.setMulitplier(100);
+        monster = Character(0,0,50,50,300);
+        return true;
+      }
+      return false;
+      break;
+    case level_3:
+      if(player.downScore(Level::level_4)){
+        level = level_4;
+        player.setMulitplier(1000);
+        monster = Character(0,0,80,80,900);
+        return true;
+      }
+      return false;
+      break;
+    case level_4:
+      if(player.downScore(Level::end_game)){
+        level = end_game;
+        gameState = EndGame;
+        player.setMulitplier(1);
+        monster = Character(0,0,5,5,50);
+        return true;
+      }
+      return false;
+      break;
+    case end_game:
+      level = level_1;
+      gameState = Adventure;
+      return true;
+      break;
+    default:
+      break;
+  }
 }
