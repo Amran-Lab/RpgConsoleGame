@@ -17,11 +17,11 @@ std::vector<Armour> shopItems = {{"Full Helm",true,5,25,false},{"Platebody",true
 
 void drawBoard(Board &board,Player &player, Gem &gem){
   char option;
-  board.drawItem("\U0001F48E", gem.getPosX(), gem.getPosY());
-  board.drawItem("\U0001F916", player.getPosX(), player.getPosY());
+  board.drawItem("\U0001F48E", gem.getPosX(), gem.getPosY()); // puts gem on board
+  board.drawItem("\U0001F916", player.getPosX(), player.getPosY()); // puts player on board
   printf("\033c"); // erases previous board
-  board.printBoard();
-  board.initiliazeBoard(); // resets board - removes previous artifacts
+  board.printBoard(); // prints new board
+  board.initializeBoard(); // resets board - removes previous artifacts
   displayStats(player);
   printf("\n| WASD To move character  M for Menu  |");
   printf("\n+-------------------------------------+\n");
@@ -30,26 +30,26 @@ void drawBoard(Board &board,Player &player, Gem &gem){
     printf("\n+-------------------------------------+\n");
     player.fightOutcome(0);
   }
-  else if (player.getFight() ==2){
+  else if (player.getFight() ==2){                // If player just lost a fight
     printf("|  DIED TO THE MONSTER - LOSE 1 GEMS  |");
     printf("\n+-------------------------------------+\n");
     player.fightOutcome(0);
   }
 
   cin >> option;
-  if ((toupper(option) == 'M')){
+  if ((toupper(option) == 'M')){  // Go To Menu
     gameState = Menu;
   }
   else if ((toupper(option) == 'W') || (toupper(option) == 'A') || (toupper(option) == 'S') || (toupper(option) == 'D')){
-    player.movePlayer(option);
+    player.movePlayer(option);  // Move Player
+    // Checks For Gem Collection
     if (gem.collision(player.getPosX(), player.getPosY())){
       player.upScore(1);
-      printf("You Gained A Gem\n");
     }
     encounterMonster(player);
   }
 }
-
+// Draw Main Menu And Navigate to Other Menus
 void drawMenu(Player &player){
   printf("\033c");
   displayStats(player);
@@ -66,8 +66,7 @@ void drawMenu(Player &player){
   switch(option) {
     case 'A':
     case 'a':
-      gameState = 
-      Items;
+      gameState = Items;
       break;
     case 'S':
     case 's':
@@ -85,10 +84,10 @@ void drawMenu(Player &player){
       break;
   }
 }
-
+// Draw Stats
 void displayStats(Player &player){
   printf("+-------------------------------------+");
-  printf("\n|           Number Of Gems: %-5d     |", player.getScore());
+  printf("\n|           Number Of Gems: %-7d   |", player.getScore());
   printf("\n+-------------------------------------+");
   printf("\n| Health:%-4d| Attack:%-3d| Defence:%-3d|",player.getHp(),player.getAtk(),player.getDef());
   printf("\n+-------------------------------------+");
@@ -98,7 +97,7 @@ void displayStats(Player &player){
   player.getDamInc()*100);
   printf("\n+-------------------------------------+");
 }
-
+// Stat Menu
 void statMenu(Player &player){
   char option;
   printf("\033c");
@@ -136,15 +135,11 @@ void statMenu(Player &player){
       break;
   }
 }
-
+// Chance Encounter With a Monster
 bool encounterMonster(Player &player){
   int chance = (rand() % 100) + 1;
   if (chance <= 25){
     
-    //string myText;
-    //std::ifstream f("ascii.txt");
-    //if (f.is_open())
-      //  std::cout << f.rdbuf();
     printf("\033c");
     displayStats(player);
     printf("\n|   You Encountered A Monster: FIGHT  |");
@@ -154,7 +149,7 @@ bool encounterMonster(Player &player){
   }
   return false;
 }
-
+// Fight Algorithm
 void fightMonster(Player &player, Character &monster){
   // resets player and monster to full health if it is beginning of fight
   if (player.getFight() == 0){
@@ -186,7 +181,7 @@ void fightMonster(Player &player, Character &monster){
   printf("\n+-------------------------------------+");
   switch(option) {
     case '1':
-      modifier = (((double) rand() / (RAND_MAX)) + 0.5); // 0.5 < r < 1.5
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5); // 0.5 < modifier < 1.5 - introduces randomness
       hitMonster = (playerAtk*1.2 * modifier) - (0.1*MonDef);
       modifier = (((double) rand() / (RAND_MAX)) + 0.5);
       hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
@@ -230,17 +225,17 @@ void fightMonster(Player &player, Character &monster){
   printf("\n+-------------------------------------+");
   if (player.getLiveHp() <= 0){
     player.downScore(1);
-    player.fightOutcome(2);   // Player Loss
+    player.fightOutcome(2);   // Outcome On Player Loss
     gameState = Adventure;
   }
 
   else if (monster.getLiveHp() <= 0){
-    player.upScore(3);       // More Gems
-    player.fightOutcome(1); // Player Win
+    player.upScore(3);       // Gain Gems
+    player.fightOutcome(1); // Change Outcome on Player Win
     gameState = Adventure;
   } 
 }
-
+// Display Shop
 void displayShop(void){
   string buy;
   string increaseMessage;
@@ -268,9 +263,9 @@ void displayShop(void){
   printf("\n|  Press M for Menu or Q to Adventure |");
   printf("\n+-------------------------------------+\n");
 }
-
+// Buy Item/Armour
 std::string pickItem(Player &player,char option){
-  float inc;
+  float increase;
   if ((toupper(option) == 'M')){
     gameState = Menu;
     return "Return To Menu\n";
@@ -280,22 +275,24 @@ std::string pickItem(Player &player,char option){
     return "Return To Adventure\n";
   }
   std::string s(1, option);
-  int number = std::atoi(s.c_str());  // Str to Int
+  int number = std::atoi(s.c_str());  // Char to Int
   if((number >0) && (number-1<shopItems.size())){
-    if(!shopItems[number-1].bought){
+    if(!shopItems[number-1].bought){  // Checks if Item is Bought
+        // Tries to Purchase Item
         if (player.downScore(shopItems[number-1].cost)){
-          shopItems[number-1].bought = true;
-          inc = shopItems[number-1].increase / 100.00;
-          shopItems[number-1].armour ? player.setDamReduct(inc) : player.setDamInc(inc) ;
+          shopItems[number-1].bought = true;  // Change Item Status
+          increase = shopItems[number-1].increase / 100.00;
+          // Checks if Armour or Weapon And Applies Increase
+          shopItems[number-1].armour ? player.setDamReduct(increase) : player.setDamInc(increase) ;
           return "|              Item Bought            |\n+-------------------------------------+\n";
         }
         return "|            Not Enough Gem           |\n+-------------------------------------+\n";
     }
     return "|         Item Already Bought         |\n+-------------------------------------+\n";
   }
-  return "|       No Valid Input Try Again      |\n+-------------------------------------+\n";
+  return "|       No Valid Input Try Again      |\n+-------------------------------------+\n";  // Validation
 }
-
+// Display Level Menu
 std::string drawLevel(Player &player,Character &monster){
   char option;
   printf("\033c");
@@ -312,9 +309,9 @@ std::string drawLevel(Player &player,Character &monster){
   gameState = Menu;
   return "";
 }
-
+// Show Current Level
 void showLevel(Player &player){
-  printf("\nCurrent Gem Multiplier %d",player.getScore());
+  printf("\nCurrent Gem Multiplier %d",player.getMulitplier());
   switch(level) {
     case level_1:
       printf("\nYou Are in Level 1\nPay %d Gems to go to Level 2",Level::level_2);
@@ -332,7 +329,7 @@ void showLevel(Player &player){
       break;
   }
 }
-
+// Try to purchase Next Level
 bool nextLevel(Player &player,Character &monster){
   switch(level) {
     case level_1:

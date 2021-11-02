@@ -7,7 +7,7 @@ using namespace std;
 class Character: public Sprite {
   public:
     Character(int initPosX,int initPosY,int initAtk,int initDef, int initHp);
-    void resetLiveHp(void);
+    void resetLiveHp(void); // Used During Fights - At Start liveHp=Hp
     void hpDamage(float damage);
     int getAtk(void);
     int getDef(void);

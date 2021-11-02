@@ -12,7 +12,7 @@ class Board {
 
     void drawItem(std::string item,int posX,int posY);
 
-    void initiliazeBoard();
+    void initializeBoard();
 };
 #endif
 /*

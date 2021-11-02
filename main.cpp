@@ -24,19 +24,19 @@ int main() {
 
   printf("A robot crash lands on earth.\nThe ship and robot are both damaged and low on fuel.\nCollect gems by defeating monsters and finding gems\nUse the gems to refuel and repair yourself and the ship.\nPress Any Key to Start: ");
   cin >> start;
-
+  // Game Loop - All the Game Happens Here
   while (gameFlag){
     switch(gameState) {
-      case Adventure:
+      case Adventure: // Adventure Happens Here
         drawBoard(board,player,gem);
         break;
-      case Menu:
+      case Menu:  // Main Menu
         drawMenu(player);
         break;
-      case Stats:
+      case Stats: // Increase Stats
         statMenu(player);
         break;
-      case Items:
+      case Items: // Buy Armour
         printf("\033c");
         printf("                  SHOP:\n");
         displayStats(player);
@@ -46,30 +46,19 @@ int main() {
         cin >> option;
         output = pickItem(player, option);
         break;
-      case Fighting:
+      case Fighting:  // Fighting A Monster
         fightMonster(player, monster);
         break;
-      case ChangeLevel:
+      case ChangeLevel: // Go to Next Level / End Game
         drawLevel(player, monster);
         break;
       case EndGame:
         printf("\033c");
         printf("Congrats - The Game Has Finished");
-        gameFlag = false;
+        gameFlag = false; // End Game - Break Loop
         break;
       default:
         break;
     }
   }
 }
-
-
-/**
-* TODO:
-*   1.Add Into And End Screen - Done
-*   2.Monster Level Changes
-*   3.Buy Alterns For Poison
-*   4.Different Biomes For Diff Levels
-*   5.Monster Movement
-*   6.Make Board Static
-*/

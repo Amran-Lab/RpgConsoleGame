@@ -1,8 +1,8 @@
-
 #include "../include/player.h"
+// Initalises Object And It's Parent Class
 Player::Player(int initPosX,int initPosY,int initAtk,int initDef, int initHp) : 
   Character(initPosX,initPosY,initAtk,initDef,initHp){}
-
+// Moves Player Bases On Input
 void Player::movePlayer(char option){
   switch(option) {
     case 'W':
@@ -36,7 +36,7 @@ void Player::movePlayer(char option){
       
   }
 }
-
+// Following Functions are Getters And Setters
 int Player::getHp(void){return hp;}
 
 void Player::upAtk(void){

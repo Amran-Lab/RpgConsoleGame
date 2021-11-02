@@ -10,7 +10,7 @@ class Player: public Character {
 
   private:
     int fightState = 0;  // 0 = NoFight 1 = Won, 2= Loss
-    int score = 800;      // number of gems/score
+    int score = 150000;      // number of gems/score
     int poisonCounter = 0; // poisons monster every round if >0
     float damReduct = 0.00; // damage modifier decrease
     float damInc = 0.00; // damage increase modifier
