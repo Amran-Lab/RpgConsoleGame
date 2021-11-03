@@ -21,7 +21,6 @@ int main() {
   Gem gem = Gem(8,5);;
   board = Board();
 
-
   printf("A robot crash lands on earth.\nThe ship and robot are both damaged and low on fuel.\nCollect gems by defeating monsters and finding gems\nUse the gems to refuel and repair yourself and the ship.\nPress Any Key to Start: ");
   cin >> start;
   // Game Loop - All the Game Happens Here

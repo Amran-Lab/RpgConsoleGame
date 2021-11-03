@@ -13,8 +13,11 @@ struct Armour{
   int cost;
   bool bought;
 };
+
 extern State gameState;
+
 extern Level level;
+
 extern std::vector<Armour> shopItems;
 
 #endif

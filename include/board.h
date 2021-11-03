@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#ifndef BOARD_H
+#ifndef BOARD_H // Only define Once
 #define BOARD_H
 class Board {
   private:
@@ -15,8 +15,3 @@ class Board {
     void initializeBoard();
 };
 #endif
-/*
-TO DO:
-MAYBE REFERENCE WRAP GEM/PLAYER/MONSTER CONTAIN
-IN BOARD 
-*/
