@@ -53,7 +53,7 @@ int main() {
         break;
       case EndGame:
         printf("\033c");
-        printf("Congrats - The Game Has Finished");
+        printf("Congrats - The Game Has Finished \nThe robot successfully leaves Earth and returns home");
         gameFlag = false; // End Game - Break Loop
         break;
       default:
