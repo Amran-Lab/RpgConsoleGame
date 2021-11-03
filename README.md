@@ -1,13 +1,12 @@
 # RpgConsoleGame
-Making a c++ console game
 
-## Intro
+# Intro
 
-This game took inspiration from consol based rpg games before it and a game that I have played previously called pokemon red. The aim of the game is to make your robot which has crash landed on earth to collect gems which you can then use to buy equipment and improve stats. They can also be used to go to the next level and eventually esacape the world and end the game. To make the game more challenging I've added a similar game mechanic from pokemon where you can randomly encounter a monster which you must fight. If you win you gain gems otherwise you lose gems. You can gain more gems from winning if you are on a higher level however the monster will be stronger.
+This game took inspiration from console based rpg games before it and a game that I have played previously called pokemon red. The aim of the game is to make your robot which has crash landed on earth to collect gems which you can then use to buy equipment and improve stats. They can also be used to go to the next level and eventually esacape the world and end the game. To make the game more challenging I've added a similar game mechanic from pokemon where you can randomly encounter a monster which you must fight. If you win you gain gems otherwise you lose gems. You can gain more gems from winning if you are on a higher level however the monster will be stronger.
 
 To complete this goal I will be taking on OOP approach, with some functional code as well. I will be using OOP tools such as inheritence, polymorphism, abstraction and encapsulation. I will try and make as many variables private and protected when possible.
 
-## Section 1 - Diagrams And Planning
+## Diagrams And Planning
 ![Blank diagram (7)](https://user-images.githubusercontent.com/52491921/139874489-cb343e91-6e86-4209-ab47-e4598a7c21de.png)
 
 If you look at the figure on the left you cann see my class diagram. The plan is to have a sprite object acting similaryly to an abstract class in that it doesn't get instantiated. Underneath that would be the gem class and character class. A key differentiating characteristic between them is the character class objects having health and attack atributes among others. The child class of the character class is player. This object would have much more functionality such as the ability to move and keep track of a score. If there are any monsters this would be instantiated with the character class however a player would be instantiated with the player class.
@@ -59,7 +58,7 @@ As you can see I created epic style tasks underneath of which I had goals I woul
 For example an early commit of [print board](https://github.com/Amran-Lab/RpgConsoleGame/commit/104ab32b58e7e0ac503a5a7dd46eea674a67160d) 
 prints the board. However this piece of code was refactored several time later to better fit with future features and to reduce bugs.
 
-## Good Standards
+# Good Standards
 
 - I used lower camel case for my variables e.g goodStandards
 and I used camel case for my structs and classes e.g GoodStandards
@@ -71,7 +70,7 @@ and I used camel case for my structs and classes e.g GoodStandards
 - Tried to use case statements instead of long nested if statements where possible
 - Got rid of nested loops by using enums to keep track of state and change the game mode
 - Aim for high cohesion and low coupling. I believe I achieved this as for example the sprite class and it's child class are not dependant on the board class.
-
+# Phases Of The Game
 ## Phase 1
 ### Aim
 The aim of this was to print the board and get the player able
@@ -147,3 +146,27 @@ A bug that I found at this stage was that when you increase the players stats or
 | Go to next Level | Press Y during level menu | go to next level and lose gems equivalent to cost | Null |
 | Fight Monster on next level | Fight monster on level 2 | Monster does not gain healt | reset live hp for player and monster during beginning of fight  |
 | End Game | Keep pressing Y during level menu | game ends | Null |
+
+# Evaluation
+
+In the previous step in the phases I mentioned some code smells and refactoring I had to do.
+Of the above examples the two that I think made the largest differenes is moving the functions to a seperate file and defining the classes elsewhere. For the first one found [here](https://github.com/Amran-Lab/RpgConsoleGame/commit/5d12be2230f532c4fe3efe3248929da81147a514), it immensely reduced the code in the main file making it more readable and abstracted away some of the logic.
+The other example I mentioned was moving the logic of the class functions to the src file. The commit found [here](https://github.com/Amran-Lab/RpgConsoleGame/commit/369ccba524dc744ea983f6e81b363263607385c2) made the classes more readable and maintainable.
+
+Some programming practises I implemented was using OOP and using inheritence, polymorphism and encapsulation. As shown in my class diagram I had a family of classes with sprite having two child classes and character having it's own child class. I also had getters and setter to retrieve my variables that I had declared as private and protected for added security. I also tried to implement as many pure functions as I can, however this proved somewhat difficult on certain functions as it is a console based game there are several functions that must print out an output.
+
+There are several key moments in my development of the project which I believed to be innovative and helpful in creating a good project. One of the first things would be using an enum as a state machine. This allowed me to change game states without having multiple game loops for each state as I was originally doing. This also reduced massively the amount of code I was dealing with because I would not have to precautions to stop and start loops, as well as keep track of them. Another thing that made my game much more comfortable to play was the ability to erase the screen. This simple change made the playing experience much better. It allowed for having a fixed board and displayal of stats below it.
+Finally I took care in creating an algorithm that would be enjoyable and balanced when fighting a monster. There are several variables that need to accounted for including the player move that was used against the monster. The code can be found under the fightMonster function. The code below is for when the player chooses to attack.
+```
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5);
+      hitMonster = (playerAtk*1.2 * modifier) - (0.1*MonDef);
+      modifier = (((double) rand() / (RAND_MAX)) + 0.5);
+      hitPlayer = (MonAtk*1.2 * modifier) - (0.1*playerDef);
+      monster.hpDamage(hitMonster*(player.getDamInc() + 1));
+      player.hpDamage(hitPlayer*(1-player.getDamReduct()));
+```
+The modifier acts to create randomness so everyfight is not the same. I have also made it so the player and monster get a different modifier so the randomness is not cancelled out.
+After this you can see the player attack is multiplied by 1.2, this is because the player chose to attack so there is an increase in attack power. Finally the attribute of damInc and damReduction are based on the armour and weapons the player has on.
+
+## Review
+Overall I believe the project went well, I have completed the MVP and have a fully playable game. If I had to improve some things in a future update I would introduce a roaming monster rather than one that is meant by chance. I would also allow for the player to purchase multiple stat points at once. After this I would make it such that every time you go up another level the biome changes e.g the trees turn into water or rocks to represent the sea or a cave.
